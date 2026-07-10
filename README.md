@@ -18,10 +18,16 @@
     * <u>**The Vulnerability of Bearer Tokens**</u>: OAuth relies heavily on bearer tokens. If an AI agent's bearer token is stolen or leaked in a prompt injection attack, the attacker gets full access. AAuth enforces proof-of-possession by default using HTTP Message Signatures. A token is cryptographically bound to the agent's private key, making stolen tokens useless to interceptors.
 
     * <u>**Decisions Happen Mid-Task**</u>: Traditional auth assumes permissions are granted upfront at login. However, AI agents assemble their toolchains live as a task unfolds. If an agent discovers it needs a new API mid-task, AAuth allows for "on-demand" authorization, allowing human consent pauses to be treated as a first-class state rather than a system error.
-    
-    * <u>**Static Scopes Don't Capture Intent**</u>: 
-    * <u>**Multi-Hop / Chained Calls**</u>:
+
+    * <u>**Static Scopes Don't Capture Intent**</u>: Traditional scopes are broad. AAuth introduces rich, *context-aware* authorization that evaluates what the agent is doing in the moment.
+        * As an example, consider an action `mail.read`.
+        * A security system cannot tell if an AI agent is reading your email just to summarize a flight confirmation, or if it has been compromised and is scraping your entire inbox.
+
+    * <u>**Multi-Hop / Chained Calls**</u>: When an AI agent has a complex job, it might call `Service A`, which then needs to call downstream `Service B`. Traditional OAuth struggles to pass authorization securely down a chain. AAuth allows interaction and authorization requirements to cleanly bubble back up the chain to the user.
     
 ### Recent Updates
-* As of July 9, 2026:
-    * f
+* In April 2026, author Dick Hardt updated and consolidated the core specification into a new [baseline draft](https://datatracker.ietf.org/doc/draft-hardt-aauth-protocol/#:~:text=draft%2Dhardt%2Daauth%2Dprotocol%2D02.%20Status.%20Versions%3A%2000.%2001.%2002.%20This,Formats.%20txt%20html%20xml%20htmlized%20bibtex%20bibxml.). Updates include: 
+    1. Introduction of "Missions" and "Mission Logs"
+        * A **Mission** is a cryptographic JSON object containing the context of what an agent is allowed to do (e.g., approved tools, approver details, and timestamp) along with a human-readable description.
+        * It uses a **Mission Log**, which acts as an ordered, live ledger maintained by the authorization server. Every token request, tool execution, and user interaction is recorded here so the system can dynamically evaluate if the agent's behavior matches its original intent.
+    2. 
