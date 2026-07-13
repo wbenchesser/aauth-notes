@@ -30,4 +30,9 @@
     1. Introduction of "Missions" and "Mission Logs"
         * A **Mission** is a cryptographic JSON object containing the context of what an agent is allowed to do (e.g., approved tools, approver details, and timestamp) along with a human-readable description.
         * It uses a **Mission Log**, which acts as an ordered, live ledger maintained by the authorization server. Every token request, tool execution, and user interaction is recorded here so the system can dynamically evaluate if the agent's behavior matches its original intent.
-    2. 
+    2. Formalization of Four Access Modes
+        * The spec has crystallized how agents interact with resources into four distinct architectural patterns:
+            1. <u>**Identity-based**</u>: The agent acts purely on its own universal cryptographic identity (aauth:local@domain) without pre-registration.  
+            2. <u>**Resource-managed (Two-party)**</u>: The resource itself directly manages permissions for the agent.  
+            3. <u>**PS-managed (Three-party)**</u>: A dedicated Authorization Server (or Personal Server) acts as the bridge between user consent and the agent.
+            4. <u>**Federated (Four-party)**</u>: Cross-domain trust where the agent and the resource utilize entirely different authorization servers.  
